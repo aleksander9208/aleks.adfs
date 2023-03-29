@@ -1,0 +1,19 @@
+{
+  "name": "lepricon/lepricon.adfs",
+  "description": "Модуль Битрикс24: настройка интеграции с ADFS",
+  "type": "package",
+  "authors": [
+    {
+      "name": "Остроушко Александр",
+      "email": "ostroushko-1992@mail.ru"
+    }
+  ],
+  "require": {
+    "onelogin/php-saml": "4.1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lepricon\\Adfs\\": "lib/"
+    }
+  }
+}
