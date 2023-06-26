@@ -1,5 +1,5 @@
 {
-  "name": "lepricon/lepricon.adfs",
+  "name": "aleks/aleks.adfs",
   "description": "Модуль Битрикс24: настройка интеграции с ADFS",
   "type": "package",
   "authors": [
@@ -13,7 +13,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Lepricon\\Adfs\\": "lib/"
+      "Aleks\\Adfs\\": "lib/"
     }
   }
 }

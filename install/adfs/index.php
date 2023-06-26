@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 use Bitrix\Main\Loader;
-use Lepricon\Adfs\Helper\MetaDataHelper;
-use OneLogin\Saml2\Error;
+use Aleks\Adfs\Helper\MetaDataHelper;
 
 require($_SERVER["DOCUMENT_ROOT"] ."/bitrix/modules/main/include/prolog_before.php");
 
-Loader::includeModule('korus.adfs');
+Loader::includeModule('aleks.adfs');
 
 try {
     MetaDataHelper::getMetaData();
-} catch (Error|Exception $e) {
+} catch (\OneLogin\Saml2\Error|Exception $e) {
     echo $e->getMessage();
 }

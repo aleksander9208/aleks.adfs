@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-use Lepricon\Adfs\Events\EventsAdfs;
 use Bitrix\Main\Application;
-use Bitrix\Main\EventManager;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
 
 /**
  * Установка модуля korus.adfs
  */
-Class korus_adfs extends CModule
+Class aleks_adfs extends CModule
 {
     /**
      * Настройки передачи параметров
@@ -19,9 +17,9 @@ Class korus_adfs extends CModule
      */
     public function __construct()
     {
-        $this->MODULE_ID = 'lepricon.adfs';
+        $this->MODULE_ID = 'aleks.adfs';
         $this->MODULE_GROUP_RIGHTS = 'Y';
-        $this->PARTNER_NAME = 'Lepricon';
+        $this->PARTNER_NAME = 'Aleksandr9208';
 
         if( file_exists(__DIR__.'/version.php') ) {
             $arModuleVersion = [];
@@ -43,21 +41,11 @@ Class korus_adfs extends CModule
     {
         global $APPLICATION;
 
-        // Регистрируем модуль
+        /** Регистрируем модуль */
         ModuleManager::registerModule($this->MODULE_ID);
 
-        //Копируем файлы
+        /** Копируем файлы */
         $this->InstallFiles();
-
-        // Регистрируем обработчик события
-        //TODO вариант с событием не редеректит
-        EventManager::getInstance()->registerEventHandlerCompatible(
-            'main',
-            'OnAfterUserLogin',
-            $this->MODULE_ID,
-            EventsAdfs::class,
-            'OnAfterUserLoginHandler'
-        );
 
         $APPLICATION->IncludeAdminFile(
             Loc::getMessage('MODULE_INSTALL'),
@@ -74,17 +62,8 @@ Class korus_adfs extends CModule
     {
         global $APPLICATION;
 
-        // Удаляем модуль
+        /** Удаляем модуль */
         ModuleManager::unRegisterModule($this->MODULE_ID);
-
-        // Удаляем обработчик события
-        EventManager::getInstance()->unRegisterEventHandler(
-            'main',
-            'OnAfterUserLogin',
-            $this->MODULE_ID,
-            EventsAdfs::class,
-            'OnAfterUserLoginHandler'
-        );
 
         if(empty($this->errors) ) {
             ModuleManager::unRegisterModule($this->MODULE_ID);
@@ -103,18 +82,26 @@ Class korus_adfs extends CModule
      */
     function InstallFiles(): void
     {
-        // Копируем файл админки
+        /** Копируем файл админки */
         CopyDirFiles(
-            __DIR__ .'/files/admin/',
+            __DIR__ .'/bitrix/admin/',
             Application::getDocumentRoot() .'/bitrix/admin/',
             true,
             true
         );
 
-        // Копируем раздел для отдачи настроек
+        /** Копируем раздел для отдачи настроек */
         CopyDirFiles(
-            __DIR__ .'/files/adfs/',
+            __DIR__ .'/adfs/',
             Application::getDocumentRoot() .'/adfs/',
+            true,
+            true
+        );
+
+        /** Копируем компоненты */
+        CopyDirFiles(
+            __DIR__ . '/bitrix/components',
+            $_SERVER['DOCUMENT_ROOT'] . '/bitrix/components',
             true,
             true
         );
@@ -127,7 +114,8 @@ Class korus_adfs extends CModule
      */
     function UnInstallFiles(): void
     {
-        Directory::deleteDirectory(Application::getDocumentRoot().'/bitrix/admin/adfs_setting_admin.php');
-        Directory::deleteDirectory(Application::getDocumentRoot().'/adfs/');
+        DeleteDirFilesEx(Application::getDocumentRoot().'/bitrix/admin/adfs_setting_admin.php');
+        DeleteDirFilesEx(Application::getDocumentRoot().'/bitrix/components/korus/adfs');
+        DeleteDirFilesEx(Application::getDocumentRoot().'/adfs');
     }
 }

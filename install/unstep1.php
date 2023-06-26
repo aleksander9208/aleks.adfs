@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+global $APPLICATION;
 
 use Bitrix\Main\Localization\Loc;
 
@@ -8,16 +8,11 @@ if(!check_bitrix_sessid()) {
     return;
 }
 
-global $obModule;
-if(!is_object($obModule)) {
-    return;
-}
-
-if (is_array($obModule->errors) && count($obModule->errors)) {
+if ($APPLICATION->GetException()) {
     echo CAdminMessage::ShowMessage([
         'TYPE' => 'ERROR',
-        'MESSAGE' => Loc::getMessage('MODULE_UNINSTALL_ERROR'),
-        'DETAILS' => implode('<br>', $obModule->errors),
+        'MESSAGE' => Loc::getMessage('MODULE_INSTALL_ERROR'),
+        'DETAILS' => $APPLICATION->GetException()->GetString(),
         'HTML' => true,
     ]);
 } else {

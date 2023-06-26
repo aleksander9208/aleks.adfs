@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lepricon\Adfs\Helper;
+namespace Aleks\Adfs\Helper;
 
 use Bitrix\Main\Context;
 use CMain;

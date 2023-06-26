@@ -11,7 +11,7 @@ use Bitrix\Main\Context;
 
 require_once($_SERVER['DOCUMENT_ROOT'] .'/bitrix/modules/main/include/prolog_admin_before.php');
 
-CModule::IncludeModule('lepricon.adfs');
+CModule::IncludeModule('aleks.adfs');
 
 $APPLICATION->SetTitle('Настройки для подключения к ADFS');
 
@@ -35,16 +35,17 @@ $arFieldsNames = [
 ];
 
 if($request['save_form'] === 'Y' && check_bitrix_sessid()) {
-    Option::set('korus.adfs', 'adfs_point_entry', $request['adfs_point_entry']);
-    Option::set('korus.adfs', 'adfs_entity_id', $request['adfs_entity_id']);
-    Option::set('korus.adfs', 'adfs_cert', $request['adfs_cert']);
+    Option::set('aleks.adfs', 'adfs_point_entry', $request['adfs_point_entry']);
+    Option::set('aleks.adfs', 'adfs_entity_id', $request['adfs_entity_id']);
+    Option::set('aleks.adfs', 'adfs_cert', $request['adfs_cert']);
 
     if ($request['clear_all'] === 'Y') {
-        $cache->clean('korus.adfs.settings', 'korus.adfs/cache');
-        $cache->cleanDir( 'korus.adfs/cache');
+        $cache->clean('aleks.adfs.settings', 'aleks.adfs/cache');
+        $cache->cleanDir( 'aleks.adfs/cache');
     }
 }
 ?>
+
     <form method='POST' action='<?= $APPLICATION->GetCurPage() ?>' name='st_access_form'>
         <input type='hidden' name='save_form' value='Y'>
         <input type='hidden' name='clear_all' value='Y'>
@@ -55,16 +56,16 @@ if($request['save_form'] === 'Y' && check_bitrix_sessid()) {
             ['DIV' => 'settings', 'TAB' => 'Настройки', 'TITLE' => 'Настройки подключения к сервису'],
         ];
 
-        if ($cache->initCache(86400, 'korus.adfs.settings', 'korus.adfs/cache')) {
+        if ($cache->initCache(86400, 'aleks.adfs.settings', 'aleks.adfs/cache')) {
             $arFieldsValues = $cache->getVars();
         } elseif ($cache->startDataCache()) {
+
             foreach ($arFieldsValues as $code => $field) {
-                $arFieldsValues[$code] = Option::get('korus.adfs', $code, '');
+                $arFieldsValues[$code] = Option::get('aleks.adfs', $code, '');
             }
 
             $cache->endDataCache($arFieldsValues);
         }
-
 
         $tabControl = new CAdminTabControl('tabControl', $aTabs);
         $tabControl->Begin();

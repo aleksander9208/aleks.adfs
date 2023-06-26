@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lepricon\Adfs\Helper;
+namespace Aleks\Adfs\Helper;
 
 use Bitrix\Main\Config\Option;
 
@@ -12,7 +12,7 @@ use Bitrix\Main\Config\Option;
 class SettingsHelper
 {
     /** @var string Название модуля для получения настроек */
-    public const MODULE_ID = 'korus.adfs';
+    public const MODULE_ID = 'aleks.adfs';
 
     /**
      * Возвращаем настройки запросов
@@ -26,10 +26,10 @@ class SettingsHelper
             'sp' => [
                 'entityId' => UrlHelper::getUrlHost() .'/adfs/',
                 'assertionConsumerService' => [
-                    'url' => UrlHelper::getUrlHost() .'/?acs',
+                    'url' => UrlHelper::getUrlHost() .'/local/adfs/?acs',
                 ],
                 'singleLogoutService' => [
-                    'url' => UrlHelper::getUrlHost() .'/?sls',
+                    'url' => UrlHelper::getUrlHost() .'/local/adfs/?sls',
                 ],
                 'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
             ],
@@ -43,6 +43,9 @@ class SettingsHelper
                     'responseUrl' => '',
                 ],
                 'x509cert' => Option::get(self::MODULE_ID, 'adfs_cert'),
+            ],
+            'security' => [
+                'requestedAuthnContext' => false,
             ],
         ];
     }
